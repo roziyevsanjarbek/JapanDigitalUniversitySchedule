@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Room;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+
+class RoomController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $perPage = $request->get('perPage', 10);
+        $rooms = Room::paginate($perPage);
+        return response()->json($rooms);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create(Request $request)
+    {
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $validator = $request->validate([
+            'name' => 'required|unique:rooms',
+        ]);
+
+        Room::query()->create($validator);
+
+        return response()->json(['message' => 'Room successfully created']);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Room $room)
+    {
+        return response()->json($room);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Room $room)
+    {
+        $validator = $request->validate([
+            'name' => ['required', Rule::unique('rooms')->ignore($room->id)],
+        ]);
+
+        $room->update($validator);
+
+        return response()->json(['message' => 'Room successfully updated']);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Room $room)
+    {
+        $room->delete();
+        return response()->json(['message' => 'Room successfully deleted']);
+    }
+}

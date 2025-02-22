@@ -30,9 +30,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 COPY . /var/www
+
+RUN chmod -R 777 /var/www/
+
 RUN composer install
 
 RUN php artisan key:generate
 
 RUN chown -R www-data:www-data /var/www
 RUN chmod -R 755 /var/www
+
+
