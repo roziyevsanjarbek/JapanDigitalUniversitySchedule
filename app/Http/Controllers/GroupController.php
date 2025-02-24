@@ -11,8 +11,18 @@ class GroupController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request){
-        $perPage = $request->get('perPage', 10);
-        $groups = Group::query()->paginate($perPage);
+
+        $query = Group::query();
+        $perPage = $request->get('perPage', 6);
+
+        if($request->has('search')){
+            $query->where('name','like','%'.$request->get('search').'%');
+        }
+        if($request->has('sort')){
+            $query->orderBy('created_at',$request->get('sort'));
+        }
+
+        $groups = $query->paginate($perPage);
         return response()->json($groups);
     }
 

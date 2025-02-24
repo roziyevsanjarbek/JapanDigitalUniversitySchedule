@@ -13,8 +13,20 @@ class RoomController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = $request->get('perPage', 10);
-        $rooms = Room::paginate($perPage);
+
+        $query = Room::query();
+        $perPage = $request->get('perPage', 6);
+
+
+        if($request->has('search')){
+            $query->where('name','like','%'.$request->get('search').'%');
+        }
+
+        if($request->has('sort')){
+            $query->orderBy('created_at',$request->get('sort'));
+        }
+
+        $rooms = $query->paginate($perPage);
         return response()->json($rooms);
     }
 
@@ -34,6 +46,7 @@ class RoomController extends Controller
         $validator = $request->validate([
             'name' => 'required|unique:rooms',
         ]);
+
 
         Room::query()->create($validator);
 
