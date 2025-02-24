@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Subject;
+use App\Models\Role;
+
 
 class User extends Authenticatable
 {
@@ -55,5 +58,12 @@ class User extends Authenticatable
     public function subjects(){
         return $this->belongsToMany(Subject::class, 'subject_teachers', 'teacher_id', 'subject_id');
     }
+
+    public function roles()
+    {
+       return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+    }
+
+
 
 }
