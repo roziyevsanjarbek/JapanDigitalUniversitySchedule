@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreRoleUserRequest;
+use App\Http\Requests\UpdateRoleUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Role;
@@ -28,12 +30,9 @@ class RoleUserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRoleUserRequest $request)
     {
-        $validator = $request->validate([
-            'role_id' => 'required|exists:roles,id',
-            'user_id' => 'required|exists:users,id',
-        ]);
+        $validator = $request->validated();
 
         $user = User::query()->find($validator['user_id']);
         $user->roles()->attach($validator['role_id']);
@@ -60,12 +59,9 @@ class RoleUserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateRoleUserRequest $request)
     {
-        $validator = $request->validate([
-            'role_id' => 'required|exists:roles,id',
-            'user_id' => 'required|exists:users,id',
-        ]);
+        $validator = $request->validated();
         $user = User::query()->find($validator['user_id']);
 
         $user->roles()->sync($validator['role_id']);
@@ -75,11 +71,9 @@ class RoleUserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id, Request $request)
+    public function destroy(string $id, UpdateRoleUserRequest $request)
     {
-        $validated = $request->validate([
-            'role_id' => 'required|exists:roles,id',
-        ]);
+        $validated = $request->validated();
         $user = User::query()->findOrFail($id);
         $user->roles()->detach($validated['role_id']);
         return response()->json(['message' => 'User role deleted successfully.']);

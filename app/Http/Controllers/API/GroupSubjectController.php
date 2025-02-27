@@ -3,41 +3,38 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DeleteGroupSubjectRequest;
+use App\Http\Requests\StoreGroupSubjectRequest;
+use App\Http\Requests\UpdateGroupSubjectRequest;
 use App\Models\Group;
 use Illuminate\Http\Request;
 
 class GroupSubjectController extends Controller
 {
 
-    public function store(Request $request)
+    public function store(StoreGroupSubjectRequest $request)
     {
-        $validator = $request->validate([
-            'group_id' => 'required|exists:groups,id',
-            'subject_id' => 'required|exists:subjects,id',
-        ]);
+        $validator = $request->validated();
 
 
-        $group = Group::findOrFail($validator['group_id']);
+
+        $group = Group::query()->findOrFail($validator['group_id']);
 
         $group->subject()->attach($validator['subject_id']);
 
         return response()->json(['message' => 'Group attached'], 200);
     }
-    public function update(string $id, Request $request){
+    public function update(string $id, UpdateGroupSubjectRequest $request){
 
-        $validator = $request->validate([
-            'subject_id' => 'required|exists:subjects,id',
-        ]);
+        $validator = $request->validated();
         $group = Group::query()->findOrFail($id);
         $group->subject()->detach($validator['subject_id']);
         return response()->json(['message' => 'Group updated'], 200);
     }
 
-    public function destroy(string $id, Request $request){
+    public function destroy(string $id, DeleteGroupSubjectRequest $request){
 
-        $validator = $request->validate([
-            'group_id' => 'required|exists:groups,id',
-        ]);
+        $validator = $request->validated();
 
         $group = Group::query()->findOrFail($validator['group_id']);
         $group->subject()->detach($id);

@@ -18,7 +18,7 @@ class AuthController extends Controller
 
        User::query()->create($validatedData);
 
-        return response()->json('User successfully registered',201);
+        return success('User successfully registered');
     }
 
     public function login(Request $request){
