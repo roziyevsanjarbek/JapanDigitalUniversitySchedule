@@ -31,9 +31,12 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 COPY . /var/www
 
-RUN chmod -R 777 /var/www/
+
 
 RUN composer install
+
+
+RUN chmod -R 777 /var/www/
 
 RUN php artisan key:generate
 
