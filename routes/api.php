@@ -6,6 +6,7 @@ use App\Http\Controllers\API\GroupStudentController;
 use App\Http\Controllers\API\GroupSubjectController;
 use App\Http\Controllers\API\RoleUserController;
 use App\Http\Controllers\API\RoomController;
+use App\Http\Controllers\API\ScheduleController;
 use App\Http\Controllers\API\SubjectController;
 use App\Http\Controllers\API\SubjectTeacherController;
 use Illuminate\Http\Request;
@@ -29,5 +30,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('group-students', GroupStudentController::class);
     Route::resource('subject-teachers', SubjectTeacherController::class);
     Route::resource('role-users', RoleUserController::class);
+    Route::resource('schedules', ScheduleController::class);
 
 });
