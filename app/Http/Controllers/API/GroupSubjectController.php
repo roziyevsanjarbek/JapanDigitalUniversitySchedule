@@ -42,9 +42,4 @@ class GroupSubjectController extends Controller
     }
 
 
-
-
-
-
-
 }

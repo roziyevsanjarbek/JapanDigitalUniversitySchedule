@@ -47,7 +47,7 @@ class GroupController extends Controller
 
         $group::query()->create($validator);
 
-        return response()->json(['message' => 'Group created successfully!']);
+        return response()->json(['message' => 'Group created successfully!'],201);
     }
 
     /**

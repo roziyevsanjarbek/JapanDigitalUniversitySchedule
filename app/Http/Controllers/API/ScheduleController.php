@@ -71,6 +71,6 @@ class ScheduleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+
     }
 }
