@@ -15,14 +15,15 @@ class AuthControllerTest extends TestCase
         $response = $this->postJson('/api/register', [
             'name' => 'John Doe',
             'email' => 'john@example.com',
-            'password' => 'password123'
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
         ]);
 
         $response->assertStatus(200)
             ->assertJson(['message' => 'User successfully registered']);
 
         $this->assertDatabaseHas('users', [
-            'email' => 'john@example.com'
+            'email' => 'john@example.com',
         ]);
     }
 
@@ -35,7 +36,7 @@ class AuthControllerTest extends TestCase
 
         $response = $this->postJson('/api/login', [
             'email' => 'john@example.com',
-            'password' => 'password123'
+            'password' => 'password123',
         ]);
 
         $response->assertStatus(200)
@@ -51,11 +52,10 @@ class AuthControllerTest extends TestCase
 
         $response = $this->postJson('/api/login', [
             'email' => 'john@example.com',
-            'password' => 'wrongpassword'
+            'password' => 'wrongpassword',
         ]);
 
         $response->assertStatus(401)
             ->assertJson(['error' => 'Unauthorized']);
     }
-
 }
