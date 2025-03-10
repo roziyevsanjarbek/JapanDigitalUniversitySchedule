@@ -44,4 +44,4 @@ class AuthController extends Controller
     }
 }
 
-//Assalomu alaykum
+
